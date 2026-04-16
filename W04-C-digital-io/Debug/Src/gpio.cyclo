@@ -1,0 +1,5 @@
+../Src/gpio.c:3:6:gpio_enable_port_clock	7
+../Src/gpio.c:19:6:gpio_init_pin	2
+../Src/gpio.c:45:6:gpio_write_pin	2
+../Src/gpio.c:53:9:gpio_read_pin	1
+../Src/gpio.c:57:6:gpio_toggle_pin	1

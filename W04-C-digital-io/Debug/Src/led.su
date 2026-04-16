@@ -1,0 +1,5 @@
+../Src/led.c:14:6:led_init_all	32	static
+../Src/led.c:24:6:led_set	8	static
+../Src/led.c:34:6:led_toggle	8	static
+../Src/led.c:43:9:led_get	0	static
+../Src/led.c:51:6:led_set_all	16	static

@@ -1,0 +1,5 @@
+../Src/led.c:14:6:led_init_all	2
+../Src/led.c:24:6:led_set	2
+../Src/led.c:34:6:led_toggle	2
+../Src/led.c:43:9:led_get	2
+../Src/led.c:51:6:led_set_all	2
