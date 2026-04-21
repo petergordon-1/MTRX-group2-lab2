@@ -1,0 +1,823 @@
+
+E3_C.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   00000194  08000000  08000000  00001000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         00000484  08000194  08000194  00001194  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000064  08000618  08000618  00001618  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .ARM.extab    00000000  0800067c  0800067c  00002038  2**0
+                  CONTENTS, READONLY
+  4 .ARM          00000000  0800067c  0800067c  00002038  2**0
+                  CONTENTS, READONLY
+  5 .preinit_array 00000000  0800067c  0800067c  00002038  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  0800067c  0800067c  0000167c  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .fini_array   00000004  08000680  08000680  00001680  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  8 .data         00000038  20000000  08000684  00002000  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .ccmram       00000000  10000000  10000000  00002038  2**0
+                  CONTENTS
+ 10 .bss          0000001c  20000038  20000038  00002038  2**2
+                  ALLOC
+ 11 ._user_heap_stack 00000604  20000054  20000054  00002038  2**0
+                  ALLOC
+ 12 .ARM.attributes 00000030  00000000  00000000  00002038  2**0
+                  CONTENTS, READONLY
+ 13 .debug_info   000006eb  00000000  00000000  00002068  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 14 .debug_abbrev 000002d6  00000000  00000000  00002753  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .debug_aranges 000000a8  00000000  00000000  00002a30  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 16 .debug_rnglists 00000071  00000000  00000000  00002ad8  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 17 .debug_macro  000010fb  00000000  00000000  00002b49  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 18 .debug_line   00000a5d  00000000  00000000  00003c44  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 19 .debug_str    00004389  00000000  00000000  000046a1  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 20 .comment      00000043  00000000  00000000  00008a2a  2**0
+                  CONTENTS, READONLY
+ 21 .debug_frame  000001b4  00000000  00000000  00008a70  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 22 .debug_line_str 00000065  00000000  00000000  00008c24  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+
+Disassembly of section .text:
+
+08000194 <__do_global_dtors_aux>:
+ 8000194:	b510      	push	{r4, lr}
+ 8000196:	4c05      	ldr	r4, [pc, #20]	@ (80001ac <__do_global_dtors_aux+0x18>)
+ 8000198:	7823      	ldrb	r3, [r4, #0]
+ 800019a:	b933      	cbnz	r3, 80001aa <__do_global_dtors_aux+0x16>
+ 800019c:	4b04      	ldr	r3, [pc, #16]	@ (80001b0 <__do_global_dtors_aux+0x1c>)
+ 800019e:	b113      	cbz	r3, 80001a6 <__do_global_dtors_aux+0x12>
+ 80001a0:	4804      	ldr	r0, [pc, #16]	@ (80001b4 <__do_global_dtors_aux+0x20>)
+ 80001a2:	f3af 8000 	nop.w
+ 80001a6:	2301      	movs	r3, #1
+ 80001a8:	7023      	strb	r3, [r4, #0]
+ 80001aa:	bd10      	pop	{r4, pc}
+ 80001ac:	20000038 	.word	0x20000038
+ 80001b0:	00000000 	.word	0x00000000
+ 80001b4:	08000600 	.word	0x08000600
+
+080001b8 <frame_dummy>:
+ 80001b8:	b508      	push	{r3, lr}
+ 80001ba:	4b03      	ldr	r3, [pc, #12]	@ (80001c8 <frame_dummy+0x10>)
+ 80001bc:	b11b      	cbz	r3, 80001c6 <frame_dummy+0xe>
+ 80001be:	4903      	ldr	r1, [pc, #12]	@ (80001cc <frame_dummy+0x14>)
+ 80001c0:	4803      	ldr	r0, [pc, #12]	@ (80001d0 <frame_dummy+0x18>)
+ 80001c2:	f3af 8000 	nop.w
+ 80001c6:	bd08      	pop	{r3, pc}
+ 80001c8:	00000000 	.word	0x00000000
+ 80001cc:	2000003c 	.word	0x2000003c
+ 80001d0:	08000600 	.word	0x08000600
+
+080001d4 <main>:
+    int16_t speed;
+    int16_t direction;
+} MovementMessage;
+
+int main(void)
+{
+ 80001d4:	b580      	push	{r7, lr}
+ 80001d6:	b086      	sub	sp, #24
+ 80001d8:	af00      	add	r7, sp, #0
+    TextMessage text_msg = { {'T', 'E', 'S', 'T'} };
+ 80001da:	4b2a      	ldr	r3, [pc, #168]	@ (8000284 <main+0xb0>)
+ 80001dc:	681b      	ldr	r3, [r3, #0]
+ 80001de:	617b      	str	r3, [r7, #20]
+    ShapeMessage shape_msg = { 2, 150 };
+ 80001e0:	4a29      	ldr	r2, [pc, #164]	@ (8000288 <main+0xb4>)
+ 80001e2:	f107 0310 	add.w	r3, r7, #16
+ 80001e6:	6812      	ldr	r2, [r2, #0]
+ 80001e8:	4611      	mov	r1, r2
+ 80001ea:	8019      	strh	r1, [r3, #0]
+ 80001ec:	3302      	adds	r3, #2
+ 80001ee:	0c12      	lsrs	r2, r2, #16
+ 80001f0:	701a      	strb	r2, [r3, #0]
+    MovementMessage move_msg = { 25, -10 };
+ 80001f2:	4b26      	ldr	r3, [pc, #152]	@ (800028c <main+0xb8>)
+ 80001f4:	681b      	ldr	r3, [r3, #0]
+ 80001f6:	60fb      	str	r3, [r7, #12]
+
+    SerialInitialise(BAUD_115200, &USART1_PORT, 0);
+ 80001f8:	2200      	movs	r2, #0
+ 80001fa:	4925      	ldr	r1, [pc, #148]	@ (8000290 <main+0xbc>)
+ 80001fc:	f44f 30e1 	mov.w	r0, #115200	@ 0x1c200
+ 8000200:	f000 f868 	bl	80002d4 <SerialInitialise>
+
+    while (1)
+    {
+        SerialOutputString((uint8_t *)"Sending TEXT packet...\r\n", &USART1_PORT);
+ 8000204:	4922      	ldr	r1, [pc, #136]	@ (8000290 <main+0xbc>)
+ 8000206:	4823      	ldr	r0, [pc, #140]	@ (8000294 <main+0xc0>)
+ 8000208:	f000 f8fa 	bl	8000400 <SerialOutputString>
+        sendMsg(&text_msg, sizeof(text_msg), MSG_TYPE_TEXT, &USART1_PORT);
+ 800020c:	f107 0014 	add.w	r0, r7, #20
+ 8000210:	4b1f      	ldr	r3, [pc, #124]	@ (8000290 <main+0xbc>)
+ 8000212:	2201      	movs	r2, #1
+ 8000214:	2104      	movs	r1, #4
+ 8000216:	f000 f96d 	bl	80004f4 <sendMsg>
+
+        for (volatile uint32_t i = 0; i < 800000; i++) {
+ 800021a:	2300      	movs	r3, #0
+ 800021c:	60bb      	str	r3, [r7, #8]
+ 800021e:	e002      	b.n	8000226 <main+0x52>
+ 8000220:	68bb      	ldr	r3, [r7, #8]
+ 8000222:	3301      	adds	r3, #1
+ 8000224:	60bb      	str	r3, [r7, #8]
+ 8000226:	68bb      	ldr	r3, [r7, #8]
+ 8000228:	4a1b      	ldr	r2, [pc, #108]	@ (8000298 <main+0xc4>)
+ 800022a:	4293      	cmp	r3, r2
+ 800022c:	d9f8      	bls.n	8000220 <main+0x4c>
+        }
+
+        SerialOutputString((uint8_t *)"Sending SHAPE packet...\r\n", &USART1_PORT);
+ 800022e:	4918      	ldr	r1, [pc, #96]	@ (8000290 <main+0xbc>)
+ 8000230:	481a      	ldr	r0, [pc, #104]	@ (800029c <main+0xc8>)
+ 8000232:	f000 f8e5 	bl	8000400 <SerialOutputString>
+        sendMsg(&shape_msg, sizeof(shape_msg), MSG_TYPE_SHAPE, &USART1_PORT);
+ 8000236:	f107 0010 	add.w	r0, r7, #16
+ 800023a:	4b15      	ldr	r3, [pc, #84]	@ (8000290 <main+0xbc>)
+ 800023c:	2202      	movs	r2, #2
+ 800023e:	2103      	movs	r1, #3
+ 8000240:	f000 f958 	bl	80004f4 <sendMsg>
+
+        for (volatile uint32_t i = 0; i < 800000; i++) {
+ 8000244:	2300      	movs	r3, #0
+ 8000246:	607b      	str	r3, [r7, #4]
+ 8000248:	e002      	b.n	8000250 <main+0x7c>
+ 800024a:	687b      	ldr	r3, [r7, #4]
+ 800024c:	3301      	adds	r3, #1
+ 800024e:	607b      	str	r3, [r7, #4]
+ 8000250:	687b      	ldr	r3, [r7, #4]
+ 8000252:	4a11      	ldr	r2, [pc, #68]	@ (8000298 <main+0xc4>)
+ 8000254:	4293      	cmp	r3, r2
+ 8000256:	d9f8      	bls.n	800024a <main+0x76>
+        }
+
+        SerialOutputString((uint8_t *)"Sending MOVEMENT packet...\r\n", &USART1_PORT);
+ 8000258:	490d      	ldr	r1, [pc, #52]	@ (8000290 <main+0xbc>)
+ 800025a:	4811      	ldr	r0, [pc, #68]	@ (80002a0 <main+0xcc>)
+ 800025c:	f000 f8d0 	bl	8000400 <SerialOutputString>
+        sendMsg(&move_msg, sizeof(move_msg), MSG_TYPE_MOVEMENT, &USART1_PORT);
+ 8000260:	f107 000c 	add.w	r0, r7, #12
+ 8000264:	4b0a      	ldr	r3, [pc, #40]	@ (8000290 <main+0xbc>)
+ 8000266:	2203      	movs	r2, #3
+ 8000268:	2104      	movs	r1, #4
+ 800026a:	f000 f943 	bl	80004f4 <sendMsg>
+
+        for (volatile uint32_t i = 0; i < 1200000; i++) {
+ 800026e:	2300      	movs	r3, #0
+ 8000270:	603b      	str	r3, [r7, #0]
+ 8000272:	e002      	b.n	800027a <main+0xa6>
+ 8000274:	683b      	ldr	r3, [r7, #0]
+ 8000276:	3301      	adds	r3, #1
+ 8000278:	603b      	str	r3, [r7, #0]
+ 800027a:	683b      	ldr	r3, [r7, #0]
+ 800027c:	4a09      	ldr	r2, [pc, #36]	@ (80002a4 <main+0xd0>)
+ 800027e:	4293      	cmp	r3, r2
+ 8000280:	d9f8      	bls.n	8000274 <main+0xa0>
+        SerialOutputString((uint8_t *)"Sending TEXT packet...\r\n", &USART1_PORT);
+ 8000282:	e7bf      	b.n	8000204 <main+0x30>
+ 8000284:	08000670 	.word	0x08000670
+ 8000288:	08000674 	.word	0x08000674
+ 800028c:	08000678 	.word	0x08000678
+ 8000290:	20000000 	.word	0x20000000
+ 8000294:	08000618 	.word	0x08000618
+ 8000298:	000c34ff 	.word	0x000c34ff
+ 800029c:	08000634 	.word	0x08000634
+ 80002a0:	08000650 	.word	0x08000650
+ 80002a4:	00124f7f 	.word	0x00124f7f
+
+080002a8 <SerialBaudToBRR>:
+    0x00,
+    0x00
+};
+
+static uint16_t SerialBaudToBRR(uint32_t baudRate)
+{
+ 80002a8:	b480      	push	{r7}
+ 80002aa:	b085      	sub	sp, #20
+ 80002ac:	af00      	add	r7, sp, #0
+ 80002ae:	6078      	str	r0, [r7, #4]
+    uint32_t pclk = 8000000UL;
+ 80002b0:	4b07      	ldr	r3, [pc, #28]	@ (80002d0 <SerialBaudToBRR+0x28>)
+ 80002b2:	60fb      	str	r3, [r7, #12]
+    return (uint16_t)((pclk + (baudRate / 2U)) / baudRate);
+ 80002b4:	687b      	ldr	r3, [r7, #4]
+ 80002b6:	085a      	lsrs	r2, r3, #1
+ 80002b8:	68fb      	ldr	r3, [r7, #12]
+ 80002ba:	441a      	add	r2, r3
+ 80002bc:	687b      	ldr	r3, [r7, #4]
+ 80002be:	fbb2 f3f3 	udiv	r3, r2, r3
+ 80002c2:	b29b      	uxth	r3, r3
+}
+ 80002c4:	4618      	mov	r0, r3
+ 80002c6:	3714      	adds	r7, #20
+ 80002c8:	46bd      	mov	sp, r7
+ 80002ca:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80002ce:	4770      	bx	lr
+ 80002d0:	007a1200 	.word	0x007a1200
+
+080002d4 <SerialInitialise>:
+
+void SerialInitialise(uint32_t baudRate,
+                      SerialPort *serial_port,
+                      void (*completion_function)(uint32_t))
+{
+ 80002d4:	b580      	push	{r7, lr}
+ 80002d6:	b084      	sub	sp, #16
+ 80002d8:	af00      	add	r7, sp, #0
+ 80002da:	60f8      	str	r0, [r7, #12]
+ 80002dc:	60b9      	str	r1, [r7, #8]
+ 80002de:	607a      	str	r2, [r7, #4]
+    serial_port->completion_function = completion_function;
+ 80002e0:	68bb      	ldr	r3, [r7, #8]
+ 80002e2:	687a      	ldr	r2, [r7, #4]
+ 80002e4:	635a      	str	r2, [r3, #52]	@ 0x34
+
+    RCC_APB1ENR |= RCC_APB1ENR_PWREN;
+ 80002e6:	4b31      	ldr	r3, [pc, #196]	@ (80003ac <SerialInitialise+0xd8>)
+ 80002e8:	681b      	ldr	r3, [r3, #0]
+ 80002ea:	4a30      	ldr	r2, [pc, #192]	@ (80003ac <SerialInitialise+0xd8>)
+ 80002ec:	f043 5380 	orr.w	r3, r3, #268435456	@ 0x10000000
+ 80002f0:	6013      	str	r3, [r2, #0]
+    RCC_APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+ 80002f2:	4b2f      	ldr	r3, [pc, #188]	@ (80003b0 <SerialInitialise+0xdc>)
+ 80002f4:	681b      	ldr	r3, [r3, #0]
+ 80002f6:	4a2e      	ldr	r2, [pc, #184]	@ (80003b0 <SerialInitialise+0xdc>)
+ 80002f8:	f043 0301 	orr.w	r3, r3, #1
+ 80002fc:	6013      	str	r3, [r2, #0]
+    RCC_AHBENR  |= serial_port->MaskAHBENR;
+ 80002fe:	68bb      	ldr	r3, [r7, #8]
+ 8000300:	691a      	ldr	r2, [r3, #16]
+ 8000302:	4b2c      	ldr	r3, [pc, #176]	@ (80003b4 <SerialInitialise+0xe0>)
+ 8000304:	681b      	ldr	r3, [r3, #0]
+ 8000306:	492b      	ldr	r1, [pc, #172]	@ (80003b4 <SerialInitialise+0xe0>)
+ 8000308:	4313      	orrs	r3, r2
+ 800030a:	600b      	str	r3, [r1, #0]
+    RCC_APB1ENR |= serial_port->MaskAPB1ENR;
+ 800030c:	68bb      	ldr	r3, [r7, #8]
+ 800030e:	68da      	ldr	r2, [r3, #12]
+ 8000310:	4b26      	ldr	r3, [pc, #152]	@ (80003ac <SerialInitialise+0xd8>)
+ 8000312:	681b      	ldr	r3, [r3, #0]
+ 8000314:	4925      	ldr	r1, [pc, #148]	@ (80003ac <SerialInitialise+0xd8>)
+ 8000316:	4313      	orrs	r3, r2
+ 8000318:	600b      	str	r3, [r1, #0]
+    RCC_APB2ENR |= serial_port->MaskAPB2ENR;
+ 800031a:	68bb      	ldr	r3, [r7, #8]
+ 800031c:	689a      	ldr	r2, [r3, #8]
+ 800031e:	4b24      	ldr	r3, [pc, #144]	@ (80003b0 <SerialInitialise+0xdc>)
+ 8000320:	681b      	ldr	r3, [r3, #0]
+ 8000322:	4923      	ldr	r1, [pc, #140]	@ (80003b0 <SerialInitialise+0xdc>)
+ 8000324:	4313      	orrs	r3, r2
+ 8000326:	600b      	str	r3, [r1, #0]
+
+    GPIOC_MODER &= ~(serial_port->TxRxPinModeMask);
+ 8000328:	68bb      	ldr	r3, [r7, #8]
+ 800032a:	695b      	ldr	r3, [r3, #20]
+ 800032c:	43da      	mvns	r2, r3
+ 800032e:	4b22      	ldr	r3, [pc, #136]	@ (80003b8 <SerialInitialise+0xe4>)
+ 8000330:	681b      	ldr	r3, [r3, #0]
+ 8000332:	4921      	ldr	r1, [pc, #132]	@ (80003b8 <SerialInitialise+0xe4>)
+ 8000334:	4013      	ands	r3, r2
+ 8000336:	600b      	str	r3, [r1, #0]
+    GPIOC_MODER |=  serial_port->TxRxPinModeValue;
+ 8000338:	68bb      	ldr	r3, [r7, #8]
+ 800033a:	699a      	ldr	r2, [r3, #24]
+ 800033c:	4b1e      	ldr	r3, [pc, #120]	@ (80003b8 <SerialInitialise+0xe4>)
+ 800033e:	681b      	ldr	r3, [r3, #0]
+ 8000340:	491d      	ldr	r1, [pc, #116]	@ (80003b8 <SerialInitialise+0xe4>)
+ 8000342:	4313      	orrs	r3, r2
+ 8000344:	600b      	str	r3, [r1, #0]
+
+    GPIOC_OSPEEDR &= ~(serial_port->TxRxPinSpeedMask);
+ 8000346:	68bb      	ldr	r3, [r7, #8]
+ 8000348:	69db      	ldr	r3, [r3, #28]
+ 800034a:	43da      	mvns	r2, r3
+ 800034c:	4b1b      	ldr	r3, [pc, #108]	@ (80003bc <SerialInitialise+0xe8>)
+ 800034e:	681b      	ldr	r3, [r3, #0]
+ 8000350:	491a      	ldr	r1, [pc, #104]	@ (80003bc <SerialInitialise+0xe8>)
+ 8000352:	4013      	ands	r3, r2
+ 8000354:	600b      	str	r3, [r1, #0]
+    GPIOC_OSPEEDR |=  serial_port->TxRxPinSpeedValue;
+ 8000356:	68bb      	ldr	r3, [r7, #8]
+ 8000358:	6a1a      	ldr	r2, [r3, #32]
+ 800035a:	4b18      	ldr	r3, [pc, #96]	@ (80003bc <SerialInitialise+0xe8>)
+ 800035c:	681b      	ldr	r3, [r3, #0]
+ 800035e:	4917      	ldr	r1, [pc, #92]	@ (80003bc <SerialInitialise+0xe8>)
+ 8000360:	4313      	orrs	r3, r2
+ 8000362:	600b      	str	r3, [r1, #0]
+
+    GPIOC_AFRL &= ~(serial_port->AlternateFunctionLowMask);
+ 8000364:	68bb      	ldr	r3, [r7, #8]
+ 8000366:	6a5b      	ldr	r3, [r3, #36]	@ 0x24
+ 8000368:	43da      	mvns	r2, r3
+ 800036a:	4b15      	ldr	r3, [pc, #84]	@ (80003c0 <SerialInitialise+0xec>)
+ 800036c:	681b      	ldr	r3, [r3, #0]
+ 800036e:	4914      	ldr	r1, [pc, #80]	@ (80003c0 <SerialInitialise+0xec>)
+ 8000370:	4013      	ands	r3, r2
+ 8000372:	600b      	str	r3, [r1, #0]
+    GPIOC_AFRL |=  serial_port->AlternateFunctionLowValue;
+ 8000374:	68bb      	ldr	r3, [r7, #8]
+ 8000376:	6a9a      	ldr	r2, [r3, #40]	@ 0x28
+ 8000378:	4b11      	ldr	r3, [pc, #68]	@ (80003c0 <SerialInitialise+0xec>)
+ 800037a:	681b      	ldr	r3, [r3, #0]
+ 800037c:	4910      	ldr	r1, [pc, #64]	@ (80003c0 <SerialInitialise+0xec>)
+ 800037e:	4313      	orrs	r3, r2
+ 8000380:	600b      	str	r3, [r1, #0]
+
+    USART1_CR1 = 0;
+ 8000382:	4b10      	ldr	r3, [pc, #64]	@ (80003c4 <SerialInitialise+0xf0>)
+ 8000384:	2200      	movs	r2, #0
+ 8000386:	601a      	str	r2, [r3, #0]
+    USART1_BRR = SerialBaudToBRR(baudRate);
+ 8000388:	68f8      	ldr	r0, [r7, #12]
+ 800038a:	f7ff ff8d 	bl	80002a8 <SerialBaudToBRR>
+ 800038e:	4603      	mov	r3, r0
+ 8000390:	461a      	mov	r2, r3
+ 8000392:	4b0d      	ldr	r3, [pc, #52]	@ (80003c8 <SerialInitialise+0xf4>)
+ 8000394:	601a      	str	r2, [r3, #0]
+    USART1_CR1 |= USART_CR1_TE | USART_CR1_RE | USART_CR1_UE;
+ 8000396:	4b0b      	ldr	r3, [pc, #44]	@ (80003c4 <SerialInitialise+0xf0>)
+ 8000398:	681b      	ldr	r3, [r3, #0]
+ 800039a:	4a0a      	ldr	r2, [pc, #40]	@ (80003c4 <SerialInitialise+0xf0>)
+ 800039c:	f043 030d 	orr.w	r3, r3, #13
+ 80003a0:	6013      	str	r3, [r2, #0]
+}
+ 80003a2:	bf00      	nop
+ 80003a4:	3710      	adds	r7, #16
+ 80003a6:	46bd      	mov	sp, r7
+ 80003a8:	bd80      	pop	{r7, pc}
+ 80003aa:	bf00      	nop
+ 80003ac:	4002101c 	.word	0x4002101c
+ 80003b0:	40021018 	.word	0x40021018
+ 80003b4:	40021014 	.word	0x40021014
+ 80003b8:	48000800 	.word	0x48000800
+ 80003bc:	48000808 	.word	0x48000808
+ 80003c0:	48000820 	.word	0x48000820
+ 80003c4:	40013800 	.word	0x40013800
+ 80003c8:	4001380c 	.word	0x4001380c
+
+080003cc <SerialOutputChar>:
+
+void SerialOutputChar(uint8_t data, SerialPort *serial_port)
+{
+ 80003cc:	b480      	push	{r7}
+ 80003ce:	b083      	sub	sp, #12
+ 80003d0:	af00      	add	r7, sp, #0
+ 80003d2:	4603      	mov	r3, r0
+ 80003d4:	6039      	str	r1, [r7, #0]
+ 80003d6:	71fb      	strb	r3, [r7, #7]
+    (void)serial_port;
+
+    while ((USART1_ISR & USART_ISR_TXE) == 0U) {
+ 80003d8:	bf00      	nop
+ 80003da:	4b07      	ldr	r3, [pc, #28]	@ (80003f8 <SerialOutputChar+0x2c>)
+ 80003dc:	681b      	ldr	r3, [r3, #0]
+ 80003de:	f003 0380 	and.w	r3, r3, #128	@ 0x80
+ 80003e2:	2b00      	cmp	r3, #0
+ 80003e4:	d0f9      	beq.n	80003da <SerialOutputChar+0xe>
+    }
+
+    USART1_TDR = data;
+ 80003e6:	4a05      	ldr	r2, [pc, #20]	@ (80003fc <SerialOutputChar+0x30>)
+ 80003e8:	79fb      	ldrb	r3, [r7, #7]
+ 80003ea:	6013      	str	r3, [r2, #0]
+}
+ 80003ec:	bf00      	nop
+ 80003ee:	370c      	adds	r7, #12
+ 80003f0:	46bd      	mov	sp, r7
+ 80003f2:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80003f6:	4770      	bx	lr
+ 80003f8:	4001381c 	.word	0x4001381c
+ 80003fc:	40013828 	.word	0x40013828
+
+08000400 <SerialOutputString>:
+
+void SerialOutputString(uint8_t *pt, SerialPort *serial_port)
+{
+ 8000400:	b580      	push	{r7, lr}
+ 8000402:	b084      	sub	sp, #16
+ 8000404:	af00      	add	r7, sp, #0
+ 8000406:	6078      	str	r0, [r7, #4]
+ 8000408:	6039      	str	r1, [r7, #0]
+    uint32_t counter = 0U;
+ 800040a:	2300      	movs	r3, #0
+ 800040c:	60fb      	str	r3, [r7, #12]
+
+    if (pt == 0) {
+ 800040e:	687b      	ldr	r3, [r7, #4]
+ 8000410:	2b00      	cmp	r3, #0
+ 8000412:	d019      	beq.n	8000448 <SerialOutputString+0x48>
+        return;
+    }
+
+    while (*pt != '\0') {
+ 8000414:	e00b      	b.n	800042e <SerialOutputString+0x2e>
+        SerialOutputChar(*pt, serial_port);
+ 8000416:	687b      	ldr	r3, [r7, #4]
+ 8000418:	781b      	ldrb	r3, [r3, #0]
+ 800041a:	6839      	ldr	r1, [r7, #0]
+ 800041c:	4618      	mov	r0, r3
+ 800041e:	f7ff ffd5 	bl	80003cc <SerialOutputChar>
+        counter++;
+ 8000422:	68fb      	ldr	r3, [r7, #12]
+ 8000424:	3301      	adds	r3, #1
+ 8000426:	60fb      	str	r3, [r7, #12]
+        pt++;
+ 8000428:	687b      	ldr	r3, [r7, #4]
+ 800042a:	3301      	adds	r3, #1
+ 800042c:	607b      	str	r3, [r7, #4]
+    while (*pt != '\0') {
+ 800042e:	687b      	ldr	r3, [r7, #4]
+ 8000430:	781b      	ldrb	r3, [r3, #0]
+ 8000432:	2b00      	cmp	r3, #0
+ 8000434:	d1ef      	bne.n	8000416 <SerialOutputString+0x16>
+    }
+
+    if (serial_port->completion_function != 0) {
+ 8000436:	683b      	ldr	r3, [r7, #0]
+ 8000438:	6b5b      	ldr	r3, [r3, #52]	@ 0x34
+ 800043a:	2b00      	cmp	r3, #0
+ 800043c:	d005      	beq.n	800044a <SerialOutputString+0x4a>
+        serial_port->completion_function(counter);
+ 800043e:	683b      	ldr	r3, [r7, #0]
+ 8000440:	6b5b      	ldr	r3, [r3, #52]	@ 0x34
+ 8000442:	68f8      	ldr	r0, [r7, #12]
+ 8000444:	4798      	blx	r3
+ 8000446:	e000      	b.n	800044a <SerialOutputString+0x4a>
+        return;
+ 8000448:	bf00      	nop
+    }
+}
+ 800044a:	3710      	adds	r7, #16
+ 800044c:	46bd      	mov	sp, r7
+ 800044e:	bd80      	pop	{r7, pc}
+
+08000450 <SerialOutputBytes>:
+
+void SerialOutputBytes(uint8_t *data, uint32_t length, SerialPort *serial_port)
+{
+ 8000450:	b580      	push	{r7, lr}
+ 8000452:	b086      	sub	sp, #24
+ 8000454:	af00      	add	r7, sp, #0
+ 8000456:	60f8      	str	r0, [r7, #12]
+ 8000458:	60b9      	str	r1, [r7, #8]
+ 800045a:	607a      	str	r2, [r7, #4]
+    uint32_t counter;
+
+    if (data == 0) {
+ 800045c:	68fb      	ldr	r3, [r7, #12]
+ 800045e:	2b00      	cmp	r3, #0
+ 8000460:	d01a      	beq.n	8000498 <SerialOutputBytes+0x48>
+        return;
+    }
+
+    for (counter = 0; counter < length; counter++) {
+ 8000462:	2300      	movs	r3, #0
+ 8000464:	617b      	str	r3, [r7, #20]
+ 8000466:	e00a      	b.n	800047e <SerialOutputBytes+0x2e>
+        SerialOutputChar(data[counter], serial_port);
+ 8000468:	68fa      	ldr	r2, [r7, #12]
+ 800046a:	697b      	ldr	r3, [r7, #20]
+ 800046c:	4413      	add	r3, r2
+ 800046e:	781b      	ldrb	r3, [r3, #0]
+ 8000470:	6879      	ldr	r1, [r7, #4]
+ 8000472:	4618      	mov	r0, r3
+ 8000474:	f7ff ffaa 	bl	80003cc <SerialOutputChar>
+    for (counter = 0; counter < length; counter++) {
+ 8000478:	697b      	ldr	r3, [r7, #20]
+ 800047a:	3301      	adds	r3, #1
+ 800047c:	617b      	str	r3, [r7, #20]
+ 800047e:	697a      	ldr	r2, [r7, #20]
+ 8000480:	68bb      	ldr	r3, [r7, #8]
+ 8000482:	429a      	cmp	r2, r3
+ 8000484:	d3f0      	bcc.n	8000468 <SerialOutputBytes+0x18>
+    }
+
+    if (serial_port->completion_function != 0) {
+ 8000486:	687b      	ldr	r3, [r7, #4]
+ 8000488:	6b5b      	ldr	r3, [r3, #52]	@ 0x34
+ 800048a:	2b00      	cmp	r3, #0
+ 800048c:	d005      	beq.n	800049a <SerialOutputBytes+0x4a>
+        serial_port->completion_function(length);
+ 800048e:	687b      	ldr	r3, [r7, #4]
+ 8000490:	6b5b      	ldr	r3, [r3, #52]	@ 0x34
+ 8000492:	68b8      	ldr	r0, [r7, #8]
+ 8000494:	4798      	blx	r3
+ 8000496:	e000      	b.n	800049a <SerialOutputBytes+0x4a>
+        return;
+ 8000498:	bf00      	nop
+    }
+}
+ 800049a:	3718      	adds	r7, #24
+ 800049c:	46bd      	mov	sp, r7
+ 800049e:	bd80      	pop	{r7, pc}
+
+080004a0 <calculateChecksum>:
+/* ===== Exercise 3c additions ===== */
+
+static uint8_t calculateChecksum(uint8_t msg_size,
+                                 uint8_t msg_type,
+                                 uint8_t *msg_body)
+{
+ 80004a0:	b480      	push	{r7}
+ 80004a2:	b085      	sub	sp, #20
+ 80004a4:	af00      	add	r7, sp, #0
+ 80004a6:	4603      	mov	r3, r0
+ 80004a8:	603a      	str	r2, [r7, #0]
+ 80004aa:	71fb      	strb	r3, [r7, #7]
+ 80004ac:	460b      	mov	r3, r1
+ 80004ae:	71bb      	strb	r3, [r7, #6]
+    uint8_t checksum = 0;
+ 80004b0:	2300      	movs	r3, #0
+ 80004b2:	73fb      	strb	r3, [r7, #15]
+    uint32_t i;
+
+    checksum ^= msg_size;
+ 80004b4:	7bfa      	ldrb	r2, [r7, #15]
+ 80004b6:	79fb      	ldrb	r3, [r7, #7]
+ 80004b8:	4053      	eors	r3, r2
+ 80004ba:	73fb      	strb	r3, [r7, #15]
+    checksum ^= msg_type;
+ 80004bc:	7bfa      	ldrb	r2, [r7, #15]
+ 80004be:	79bb      	ldrb	r3, [r7, #6]
+ 80004c0:	4053      	eors	r3, r2
+ 80004c2:	73fb      	strb	r3, [r7, #15]
+
+    for (i = 0; i < msg_size; i++) {
+ 80004c4:	2300      	movs	r3, #0
+ 80004c6:	60bb      	str	r3, [r7, #8]
+ 80004c8:	e009      	b.n	80004de <calculateChecksum+0x3e>
+        checksum ^= msg_body[i];
+ 80004ca:	683a      	ldr	r2, [r7, #0]
+ 80004cc:	68bb      	ldr	r3, [r7, #8]
+ 80004ce:	4413      	add	r3, r2
+ 80004d0:	781a      	ldrb	r2, [r3, #0]
+ 80004d2:	7bfb      	ldrb	r3, [r7, #15]
+ 80004d4:	4053      	eors	r3, r2
+ 80004d6:	73fb      	strb	r3, [r7, #15]
+    for (i = 0; i < msg_size; i++) {
+ 80004d8:	68bb      	ldr	r3, [r7, #8]
+ 80004da:	3301      	adds	r3, #1
+ 80004dc:	60bb      	str	r3, [r7, #8]
+ 80004de:	79fb      	ldrb	r3, [r7, #7]
+ 80004e0:	68ba      	ldr	r2, [r7, #8]
+ 80004e2:	429a      	cmp	r2, r3
+ 80004e4:	d3f1      	bcc.n	80004ca <calculateChecksum+0x2a>
+    }
+
+    return checksum;
+ 80004e6:	7bfb      	ldrb	r3, [r7, #15]
+}
+ 80004e8:	4618      	mov	r0, r3
+ 80004ea:	3714      	adds	r7, #20
+ 80004ec:	46bd      	mov	sp, r7
+ 80004ee:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80004f2:	4770      	bx	lr
+
+080004f4 <sendMsg>:
+
+void sendMsg(void *msg_struct,
+             uint8_t msg_size,
+             uint8_t msg_type,
+             SerialPort *serial_port)
+{
+ 80004f4:	b580      	push	{r7, lr}
+ 80004f6:	b086      	sub	sp, #24
+ 80004f8:	af00      	add	r7, sp, #0
+ 80004fa:	60f8      	str	r0, [r7, #12]
+ 80004fc:	607b      	str	r3, [r7, #4]
+ 80004fe:	460b      	mov	r3, r1
+ 8000500:	72fb      	strb	r3, [r7, #11]
+ 8000502:	4613      	mov	r3, r2
+ 8000504:	72bb      	strb	r3, [r7, #10]
+    uint8_t checksum;
+    uint8_t *body_ptr;
+
+    if (msg_struct == 0) {
+ 8000506:	68fb      	ldr	r3, [r7, #12]
+ 8000508:	2b00      	cmp	r3, #0
+ 800050a:	d027      	beq.n	800055c <sendMsg+0x68>
+        return;
+    }
+
+    body_ptr = (uint8_t *)msg_struct;
+ 800050c:	68fb      	ldr	r3, [r7, #12]
+ 800050e:	617b      	str	r3, [r7, #20]
+
+    /* Packet format:
+       [START][SIZE][TYPE][BODY...][CHECKSUM][STOP]
+    */
+    SerialOutputChar(MSG_START_BYTE, serial_port);
+ 8000510:	6879      	ldr	r1, [r7, #4]
+ 8000512:	203c      	movs	r0, #60	@ 0x3c
+ 8000514:	f7ff ff5a 	bl	80003cc <SerialOutputChar>
+    SerialOutputChar(msg_size, serial_port);
+ 8000518:	7afb      	ldrb	r3, [r7, #11]
+ 800051a:	6879      	ldr	r1, [r7, #4]
+ 800051c:	4618      	mov	r0, r3
+ 800051e:	f7ff ff55 	bl	80003cc <SerialOutputChar>
+    SerialOutputChar(msg_type, serial_port);
+ 8000522:	7abb      	ldrb	r3, [r7, #10]
+ 8000524:	6879      	ldr	r1, [r7, #4]
+ 8000526:	4618      	mov	r0, r3
+ 8000528:	f7ff ff50 	bl	80003cc <SerialOutputChar>
+    SerialOutputBytes(body_ptr, msg_size, serial_port);
+ 800052c:	7afb      	ldrb	r3, [r7, #11]
+ 800052e:	687a      	ldr	r2, [r7, #4]
+ 8000530:	4619      	mov	r1, r3
+ 8000532:	6978      	ldr	r0, [r7, #20]
+ 8000534:	f7ff ff8c 	bl	8000450 <SerialOutputBytes>
+
+    checksum = calculateChecksum(msg_size, msg_type, body_ptr);
+ 8000538:	7ab9      	ldrb	r1, [r7, #10]
+ 800053a:	7afb      	ldrb	r3, [r7, #11]
+ 800053c:	697a      	ldr	r2, [r7, #20]
+ 800053e:	4618      	mov	r0, r3
+ 8000540:	f7ff ffae 	bl	80004a0 <calculateChecksum>
+ 8000544:	4603      	mov	r3, r0
+ 8000546:	74fb      	strb	r3, [r7, #19]
+    SerialOutputChar(checksum, serial_port);
+ 8000548:	7cfb      	ldrb	r3, [r7, #19]
+ 800054a:	6879      	ldr	r1, [r7, #4]
+ 800054c:	4618      	mov	r0, r3
+ 800054e:	f7ff ff3d 	bl	80003cc <SerialOutputChar>
+
+    SerialOutputChar(MSG_STOP_BYTE, serial_port);
+ 8000552:	6879      	ldr	r1, [r7, #4]
+ 8000554:	203e      	movs	r0, #62	@ 0x3e
+ 8000556:	f7ff ff39 	bl	80003cc <SerialOutputChar>
+ 800055a:	e000      	b.n	800055e <sendMsg+0x6a>
+        return;
+ 800055c:	bf00      	nop
+}
+ 800055e:	3718      	adds	r7, #24
+ 8000560:	46bd      	mov	sp, r7
+ 8000562:	bd80      	pop	{r7, pc}
+
+08000564 <Reset_Handler>:
+
+  .section .text.Reset_Handler
+  .weak Reset_Handler
+  .type Reset_Handler, %function
+Reset_Handler:
+  ldr   r0, =_estack
+ 8000564:	480d      	ldr	r0, [pc, #52]	@ (800059c <LoopForever+0x2>)
+  mov   sp, r0          /* set stack pointer */
+ 8000566:	4685      	mov	sp, r0
+/* Call the clock system initialization function.*/
+  bl  SystemInit
+ 8000568:	f3af 8000 	nop.w
+
+/* Copy the data segment initializers from flash to SRAM */
+  ldr r0, =_sdata
+ 800056c:	480c      	ldr	r0, [pc, #48]	@ (80005a0 <LoopForever+0x6>)
+  ldr r1, =_edata
+ 800056e:	490d      	ldr	r1, [pc, #52]	@ (80005a4 <LoopForever+0xa>)
+  ldr r2, =_sidata
+ 8000570:	4a0d      	ldr	r2, [pc, #52]	@ (80005a8 <LoopForever+0xe>)
+  movs r3, #0
+ 8000572:	2300      	movs	r3, #0
+  b LoopCopyDataInit
+ 8000574:	e002      	b.n	800057c <LoopCopyDataInit>
+
+08000576 <CopyDataInit>:
+
+CopyDataInit:
+  ldr r4, [r2, r3]
+ 8000576:	58d4      	ldr	r4, [r2, r3]
+  str r4, [r0, r3]
+ 8000578:	50c4      	str	r4, [r0, r3]
+  adds r3, r3, #4
+ 800057a:	3304      	adds	r3, #4
+
+0800057c <LoopCopyDataInit>:
+
+LoopCopyDataInit:
+  adds r4, r0, r3
+ 800057c:	18c4      	adds	r4, r0, r3
+  cmp r4, r1
+ 800057e:	428c      	cmp	r4, r1
+  bcc CopyDataInit
+ 8000580:	d3f9      	bcc.n	8000576 <CopyDataInit>
+
+/* Zero fill the bss segment. */
+  ldr r2, =_sbss
+ 8000582:	4a0a      	ldr	r2, [pc, #40]	@ (80005ac <LoopForever+0x12>)
+  ldr r4, =_ebss
+ 8000584:	4c0a      	ldr	r4, [pc, #40]	@ (80005b0 <LoopForever+0x16>)
+  movs r3, #0
+ 8000586:	2300      	movs	r3, #0
+  b LoopFillZerobss
+ 8000588:	e001      	b.n	800058e <LoopFillZerobss>
+
+0800058a <FillZerobss>:
+
+FillZerobss:
+  str  r3, [r2]
+ 800058a:	6013      	str	r3, [r2, #0]
+  adds r2, r2, #4
+ 800058c:	3204      	adds	r2, #4
+
+0800058e <LoopFillZerobss>:
+
+LoopFillZerobss:
+  cmp r2, r4
+ 800058e:	42a2      	cmp	r2, r4
+  bcc FillZerobss
+ 8000590:	d3fb      	bcc.n	800058a <FillZerobss>
+
+
+/* Call static constructors */
+  bl __libc_init_array
+ 8000592:	f000 f811 	bl	80005b8 <__libc_init_array>
+/* Call the application's entry point.*/
+
+  bl main
+ 8000596:	f7ff fe1d 	bl	80001d4 <main>
+
+0800059a <LoopForever>:
+
+LoopForever:
+  b LoopForever
+ 800059a:	e7fe      	b.n	800059a <LoopForever>
+  ldr   r0, =_estack
+ 800059c:	2000a000 	.word	0x2000a000
+  ldr r0, =_sdata
+ 80005a0:	20000000 	.word	0x20000000
+  ldr r1, =_edata
+ 80005a4:	20000038 	.word	0x20000038
+  ldr r2, =_sidata
+ 80005a8:	08000684 	.word	0x08000684
+  ldr r2, =_sbss
+ 80005ac:	20000038 	.word	0x20000038
+  ldr r4, =_ebss
+ 80005b0:	20000054 	.word	0x20000054
+
+080005b4 <ADC1_2_IRQHandler>:
+ * @retval : None
+*/
+  .section .text.Default_Handler,"ax",%progbits
+Default_Handler:
+Infinite_Loop:
+  b Infinite_Loop
+ 80005b4:	e7fe      	b.n	80005b4 <ADC1_2_IRQHandler>
+	...
+
+080005b8 <__libc_init_array>:
+ 80005b8:	b570      	push	{r4, r5, r6, lr}
+ 80005ba:	4b0d      	ldr	r3, [pc, #52]	@ (80005f0 <__libc_init_array+0x38>)
+ 80005bc:	4d0d      	ldr	r5, [pc, #52]	@ (80005f4 <__libc_init_array+0x3c>)
+ 80005be:	1b5b      	subs	r3, r3, r5
+ 80005c0:	109c      	asrs	r4, r3, #2
+ 80005c2:	2600      	movs	r6, #0
+ 80005c4:	42a6      	cmp	r6, r4
+ 80005c6:	d109      	bne.n	80005dc <__libc_init_array+0x24>
+ 80005c8:	f000 f81a 	bl	8000600 <_init>
+ 80005cc:	4d0a      	ldr	r5, [pc, #40]	@ (80005f8 <__libc_init_array+0x40>)
+ 80005ce:	4b0b      	ldr	r3, [pc, #44]	@ (80005fc <__libc_init_array+0x44>)
+ 80005d0:	1b5b      	subs	r3, r3, r5
+ 80005d2:	109c      	asrs	r4, r3, #2
+ 80005d4:	2600      	movs	r6, #0
+ 80005d6:	42a6      	cmp	r6, r4
+ 80005d8:	d105      	bne.n	80005e6 <__libc_init_array+0x2e>
+ 80005da:	bd70      	pop	{r4, r5, r6, pc}
+ 80005dc:	f855 3b04 	ldr.w	r3, [r5], #4
+ 80005e0:	4798      	blx	r3
+ 80005e2:	3601      	adds	r6, #1
+ 80005e4:	e7ee      	b.n	80005c4 <__libc_init_array+0xc>
+ 80005e6:	f855 3b04 	ldr.w	r3, [r5], #4
+ 80005ea:	4798      	blx	r3
+ 80005ec:	3601      	adds	r6, #1
+ 80005ee:	e7f2      	b.n	80005d6 <__libc_init_array+0x1e>
+ 80005f0:	0800067c 	.word	0x0800067c
+ 80005f4:	0800067c 	.word	0x0800067c
+ 80005f8:	0800067c 	.word	0x0800067c
+ 80005fc:	08000680 	.word	0x08000680
+
+08000600 <_init>:
+ 8000600:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000602:	bf00      	nop
+ 8000604:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000606:	bc08      	pop	{r3}
+ 8000608:	469e      	mov	lr, r3
+ 800060a:	4770      	bx	lr
+
+0800060c <_fini>:
+ 800060c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800060e:	bf00      	nop
+ 8000610:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000612:	bc08      	pop	{r3}
+ 8000614:	469e      	mov	lr, r3
+ 8000616:	4770      	bx	lr

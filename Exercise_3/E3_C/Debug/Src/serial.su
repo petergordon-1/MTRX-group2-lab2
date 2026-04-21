@@ -1,0 +1,9 @@
+../Src/serial.c:84:17:SerialBaudToBRR	24	static
+../Src/serial.c:90:6:SerialInitialise	24	static
+../Src/serial.c:116:6:SerialOutputChar	16	static
+../Src/serial.c:126:6:SerialOutputString	24	static
+../Src/serial.c:145:6:SerialOutputBytes	32	static
+../Src/serial.c:162:9:SerialInputChar	16	static
+../Src/serial.c:172:6:SerialInputBytes	40	static
+../Src/serial.c:187:16:calculateChecksum	24	static
+../Src/serial.c:204:6:sendMsg	32	static
