@@ -1,5 +1,0 @@
-../Src/main.c:5:12:is_printable_text	24	static
-../Src/main.c:18:13:print_hex	40	static
-../Src/main.c:31:6:tx_done	16	static
-../Src/main.c:36:6:rx_done	160	static
-../Src/main.c:68:5:main	8	static
