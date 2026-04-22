@@ -93,47 +93,40 @@ directly driven by TIM1, and configures TIM1 to generate a 50Hz PWM signal with 
 
 
 
+# Exercise 3 - Serial Interface
 
+## Summary
+This exercise implements a modular UART serial interface for the STM32F3 Discovery board using USART1 on PC4 (TX) and PC5 (RX). It provides functions for sending strings, sending structured binary messages with framing and checksums, and receiving messages using an interrupt driven approach that fires a callback when a complete valid packet arrives.
 
+## Usage
+1. Call `SerialInitialise(baudRate, &USART1_PORT, tx_callback, rx_callback)` to set up the serial port
+2. Call `SerialOutputString(str, &USART1_PORT)` to send a null terminated string
+3. Call `sendMsg(struct_ptr, size, type, &USART1_PORT)` to send a structured packet
+4. Call `receiveMsg(&USART1_PORT)` to wait for and process an incoming packet
+5. The rx_callback registered during initialisation is called automatically when a valid packet is received
 
+## Valid Input
+* `baudRate`: Use the provided constants — `BAUD_9600`, `BAUD_19200`, `BAUD_38400`, `BAUD_57600`, `BAUD_115200`
+* `msg_size`: A value from 0 to 9 — the packet format encodes size as a single ASCII digit
+* `msg_type`: A value from 0 to 9 for the same reason
+* Packets sent from a terminal should follow the format `<SIZETYPE BODY CHECKSUM>` for example `<41TEST17>`
 
-## Exercise 3: Serial Interface
-### Summary
-Implements a modular UART serial interface for the STM32F3 Discovery board using USART1 on PC4 (TX) and PC5 (RX). Provides functions for sending strings, sending structured binary messages with framing and checksums, and receiving messages using an interrupt-driven approach with a registered callback.
-How it works
-The serial module initialises USART1 at a configurable baud rate and registers transmit and receive callbacks at startup. Outgoing messages are assembled into a structured packet format before transmission. Incoming bytes are received via UART interrupt — each byte is stored in a buffer as it arrives, and once the stop byte is detected the checksum is validated before the registered receive callback is fired with the message body and type.
-The packet format is designed to be terminal-friendly and human-readable:
-< SIZE TYPE BODY CHECKSUM >
-Where SIZE and TYPE are ASCII digit characters, BODY is the raw message bytes, and CHECKSUM is a two-character hex string. The start byte is < and the stop byte is >.
-The checksum is calculated as an XOR of the size byte, type byte, and all body bytes. This allows the receiver to detect corrupted packets without needing a more complex algorithm.
-### Usage
-Flash the code onto the STM32F3 Discovery board. Connect the board to a computer via USB-serial adapter on PC4/PC5. Open a serial terminal at 115200 baud. Send a packet in the format <SIZETYPE BODY CHECKSUM>, for example <41TEST17>. The board will parse the packet, validate the checksum, and trigger the receive callback which prints the decoded message back to the terminal.
-### Module Structure
-serial.c / serial.h
-Full serial interface module. Handles hardware initialisation, transmit, receive, and packet framing.
+## Functions and Modularity
+This exercise is contained in a single serial module with a header and source file. The `SerialPort` struct holds all the hardware configuration and callbacks so the same module could support multiple serial ports with different settings.
 
-SerialInitialise — configures GPIOC pins for alternate function, sets up USART1 at the given baud rate, enables TX and RX, registers TX and RX callbacks
-SerialOutputChar — polls the TXE flag and writes a single byte to the transmit data register
-SerialOutputString — transmits a null-terminated string one byte at a time, fires the TX callback with the byte count on completion
-SerialOutputBytes — transmits a fixed-length byte array, fires the TX callback on completion
-SerialInputChar — polls the RXNE flag and returns a single received byte (used internally)
-sendMsg — assembles a structured packet from a message struct and transmits it. Packet format is < SIZE TYPE BODY CHECKSUM >
-receiveMsg — interrupt-driven receive. Collects incoming bytes into an internal buffer until the stop byte arrives, validates the checksum, then calls the RX callback with the message type, body pointer, and body length
+* **SerialInitialise**: Configures GPIOC pins for alternate function mode, sets up USART1 at the given baud rate, enables TX and RX, and registers the TX and RX callback functions.
 
-### Testing
-String transmission works
-Call SerialOutputString with a known string. Confirm it appears correctly in the serial terminal.
-Packet assembly is correct
-Call sendMsg with a known struct and message type. In the terminal confirm the output matches the expected format < SIZE TYPE BODY CHECKSUM > with correct size, type, body bytes, and checksum.
-Checksum validation works
-Send a packet with a deliberately incorrect checksum from the terminal. Confirm the board responds with a checksum error message and does not fire the receive callback.
-Receive callback fires on valid packet
-Send a valid packet from the terminal. Confirm the receive callback is called with the correct message type, body content, and body length.
-Interrupt driven receive does not block
-Confirm that the main loop continues running while waiting for incoming serial data. The receive process should be entirely interrupt driven with no polling loop blocking execution.
-Buffer overflow is handled
-Send a packet longer than RX_BUFFER_SIZE. Confirm the module handles this gracefully and outputs an appropriate error message rather than corrupting memory.
-### Notes
-The packet format only supports message sizes and types from 0–9 since they are encoded as single ASCII digit characters. Messages larger than 9 bytes or with a type value above 9 will be rejected by sendMsg.
-The receive callback is registered once during SerialInitialise. If a different callback is needed for different message types, the message type field passed to the callback can be used to branch within a single callback function.
-The USART1 peripheral is configured for 115200 baud assuming an 8MHz system clock. The BRR value is calculated using integer rounding to minimise baud rate error.
+* **SerialOutputString / SerialOutputBytes**: Transmit a string or byte array one byte at a time by polling the TXE flag before each write. Fires the TX callback with the byte count when done.
+
+* **sendMsg**: Assembles a structured packet from a message struct and transmits it. The format is `< SIZE TYPE BODY CHECKSUM >` where SIZE and TYPE are ASCII digit characters and CHECKSUM is a two character hex string calculated by XORing the size, type and all body bytes together.
+
+* **receiveMsg**: Interrupt driven receive. Collects incoming bytes into an internal buffer until the stop byte `>` arrives, validates the checksum, then calls the RX callback with the message type, a pointer to the body, and the body length. If the checksum fails or the packet is malformed an error message is sent back over serial.
+
+## Testing
+
+* **String transmission works**: Call `SerialOutputString` with a known string and confirm it appears correctly in the serial terminal
+* **Packet assembly is correct**: Call `sendMsg` with a known struct and confirm the output in the terminal matches the expected format with correct size, type, body and checksum
+* **Checksum validation works**: Send a packet from the terminal with a deliberately wrong checksum and confirm the board responds with a checksum error and does not fire the callback
+* **Receive callback fires on valid packet**: Send a valid packet like `<41TEST17>` from the terminal and confirm the callback is called with the correct message type, body and length
+* **Interrupt driven receive does not block**: Confirm the main loop continues running while waiting for data — the receive is entirely interrupt driven with no polling loop blocking execution
+* **Buffer overflow is handled**: Send a packet longer than `RX_BUFFER_SIZE` and confirm the module outputs an error rather than corrupting memory
