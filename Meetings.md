@@ -26,4 +26,17 @@ Establish group roles and a general direction for the project
 
 ### Items:
 - We discussed problems we were having with our parts and collaborated on ways to overcome them
-- Brainstormed a modular approach that will make implementing the individual exercises together easy and less likely to cause bugs 
+- Brainstormed a modular approach that will make implementing the individual exercises together easy and less likely to cause bugs
+
+
+## Date - 23/4/2026 
+### Present:
+- Peter
+- Tom
+- Bella
+
+### Meeting Purpose:
+- To do some final testing before the lab and try the integration together
+Items:
+- Addressed some bugs that arised during the integrations
+- Planned out our demonstration process for the lab
