@@ -2,9 +2,10 @@
 
 ## Group Members
 
-Tom Whitehead
+Tom Whitehead, Peter Gordon, Isabella
 
 ## Roles and Responbilities
+5.1 Peter Gordon
 
 5.2 - Tom Whitehead
 
