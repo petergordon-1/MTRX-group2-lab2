@@ -1,0 +1,19 @@
+Lists the USB currently attached to the laptop:
+ls /dev/tty.*
+
+Will print something like:
+/dev/tty.usbmodem142203
+
+To start the screen session, use the exact code for the USB given in the list command and the baud rate you want to use:
+screen /dev/tty.usbmodem142203 9600
+
+The screen will stay open and can run different projects depending on what's flashed to the microcontroller.
+Use the reset button to restart your main loop.
+When you quit the terminal, you will exit the screen but not quit it.
+Use the commands below to restart the screen session; otherwise, it will continuously tell you the screen is already being used.
+
+Lists what is currently using the screen:
+lsof | grep usbmodem
+
+You can't start a new screen until you quit the last one, so run the grep command and then:
+kill -9 [the number of the screen session listed]
