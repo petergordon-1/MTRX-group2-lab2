@@ -13,6 +13,54 @@ Tom Whitehead
 
 ## Project Overview
 
+##Exercise 1: Digital I/O
+###Summary
+Implements a modular GPIO interface for the STM32F3 Discovery board, with independent modules for the LED array and user button built on top of a generic GPIO layer. Pressing the user button triggers a callback that toggles the LED pattern between two alternating states.
+How it works
+The program initialises the LED array and button module at startup, then enters a polling loop that calls button_update() on every iteration. The button module detects a rising edge (not pressed → pressed) and fires a registered callback function. The callback flips the LED pattern by XORing the current pattern with 0xFF, toggling all 8 LEDs between 0b10101010 and 0b01010101. LED state is encapsulated inside led.c and can only be accessed through the provided get/set functions — no other module can write to the LED pins directly.
+The GPIO layer handles all register-level configuration. It clears and sets the relevant MODER bits for each pin, configures push-pull output and pull resistors, and provides generic read/write functions used by both the LED and button modules. Neither led.c nor button.c touch hardware registers directly.
+###Usage
+Flash the code onto the STM32F3 Discovery board. On startup the LEDs will display the initial pattern 0b10101010 (every other LED on). Press the user button to toggle the pattern. Each press alternates between 0b10101010 and 0b01010101.
+###Module Structure
+gpio.c / gpio.h
+Generic GPIO driver. Handles pin initialisation, clock enabling, and provides read/write/toggle functions for any GPIO port and pin. This is the only module that touches MODER, ODR, and IDR directly.
+
+gpio_enable_port_clock — enables the AHB clock for the specified port
+gpio_init_pin — clears and sets the MODER bits for a pin, configures output type, speed, and pull resistors
+gpio_write_pin — sets a pin high or low via ODR
+gpio_read_pin — reads the current state of a pin via IDR
+gpio_toggle_pin — flips a pin state by XORing the ODR bit
+
+led.c / led.h
+LED array driver built on top of gpio.c. Manages 8 LEDs on GPIOE pins 8–15. Internal state is stored in a private array and is only accessible through get/set functions.
+
+led_init_all — initialises all 8 LED pins as outputs and sets them low
+led_set — sets a specific LED on or off, updates internal state
+led_get — returns the current state of a specific LED
+led_toggle — flips a specific LED
+led_set_all — sets all 8 LEDs at once using a bitmask pattern
+
+button.c / button.h
+Button driver built on top of gpio.c. Implements rising edge detection to fire a callback exactly once per press, regardless of how long the button is held.
+
+button_init — initialises PA0 as input and registers a callback function
+button_is_pressed — returns the raw current state of the button
+button_update — must be called regularly in the main loop; detects rising edge and fires the callback
+
+###Testing
+LEDs initialise correctly
+On power-up, confirm that LEDs 1, 3, 5, 7 are on and LEDs 0, 2, 4, 6 are off (pattern 0b10101010).
+Button toggles pattern
+Press the user button once. The pattern should invert to 0b01010101. Press again and it should return to 0b10101010.
+Rising edge detection works
+Hold the button down. The pattern should only change once when the button is first pressed, not repeatedly while it is held.
+LED state encapsulation
+Confirm that no code outside led.c writes directly to GPIOE ODR. All LED changes go through led_set or led_set_all.
+Callback mechanism
+Confirm that button.c has no knowledge of LEDs. The callback is registered by main.c at initialisation and called by the button module when a rising edge is detected.
+###Notes
+The button module uses polling in the main loop rather than hardware interrupts. This means the button is only checked as fast as the loop runs, which is sufficient for human button presses but would not be appropriate for high frequency signals. The tradeoff is simpler code with no interrupt configuration required.
+The rising edge detection prevents the callback from firing continuously while the button is held, but does not implement full hardware debouncing. Rapid repeated presses may occasionally register twice due to mechanical bounce on the button contacts.
 ## Exercise 5.2 - Timer interface
 
 ### Summary
