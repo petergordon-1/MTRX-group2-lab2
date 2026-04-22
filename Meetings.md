@@ -1,42 +1,37 @@
-# MTRX Group #2 - "STM STARS"
-##  Date - 2/4/2026
-### Present:
-- Peter
-- Bella
-- Tom
+# MTRX GROUP 2 Meeting Minutes
 
-### Meeting Purpose:
-Establish group roles and a general direction for the project
+## Meeting 1 — 2nd April 2026
 
-### Items:
-- Assign members to a groups, Peter is task one, Tom is task 2 and Bella is task 3, with task 4 to be determined and task 5 to be shared collectively
-- We set deadlines for how much progress we should have done by next week with considerable progress done so we can begin to understand how to incorportate the tasks together in the integration part.
+**Present:** Peter, Tom, Bella
 
-##  Date - 16/4/2026
-### Present:
-- Peter
-- Bella
-- Tom
+**Purpose:** Establish group roles and project direction
 
-### Meeting Purpose:
-- To understand everyones progress on their tasks
-- Recognise potential roadblocks and issues that may come up in the following week
-- Create a schedule for our collective testing and integration
+**Items:**
+- Assigned exercises to group members: Peter — Exercise 1 (Digital I/O), Tom — Exercise 2 (Timer Interface), Bella — Exercise 3 (Serial Interface) and Exercise 4 (I2C Magnetometer), Exercise 5 (Integration) to be completed collectively
+- Set a progress deadline of the following week to ensure enough time to understand how individual modules would fit together for the integration task
 
+---
 
-### Items:
-- We discussed problems we were having with our parts and collaborated on ways to overcome them
-- Brainstormed a modular approach that will make implementing the individual exercises together easy and less likely to cause bugs
+## Meeting 2 — 16th April 2026
 
+**Present:** Peter, Tom, Bella
 
-## Date - 23/4/2026 
-### Present:
-- Peter
-- Tom
-- Bella
+**Purpose:** Review progress and plan for integration
 
-### Meeting Purpose:
-- To do some final testing before the lab and try the integration together
-Items:
-- Addressed some bugs that arised during the integrations
-- Planned out our demonstration process for the lab
+**Items:**
+- Each member presented their progress and discussed blockers they had encountered
+- Collaborated on solutions to individual module problems
+- Agreed on a modular design approach to make integration cleaner and reduce the risk of bugs when combining exercises
+
+---
+
+## Meeting 3 — 23rd April 2026
+
+**Present:** Peter, Tom, Bella
+
+**Purpose:** Final testing and integration before lab demonstration
+
+**Items:**
+- Brought individual modules together and tested the integration
+- Identified and addressed bugs that arose during combined testing
+- Planned the demonstration flow for the lab assessment
