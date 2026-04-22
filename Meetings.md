@@ -35,3 +35,7 @@
 - Brought individual modules together and tested the integration
 - Identified and addressed bugs that arose during combined testing
 - Planned the demonstration flow for the lab assessment
+
+## Ongoing Communication
+ 
+In addition to the scheduled meetings above, the group maintained regular contact throughout the project via text and Zoom calls. These informal check-ins were used to share progress, swap files, ask questions about each other's modules, and help each other work through problems as they came up. This allowed us to stay across all parts of the project rather than only understanding our own individual exercises.
